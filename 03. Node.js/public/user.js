@@ -30,7 +30,10 @@ async function displayUsers(users) {
     }
 }
 
-async 
+async function createTableRow(...columns) {
+    const row = document.createElement('div');
+    row.innerHTML = contents.jooin(', ');
+    return row;
 
 async function handleSubmitForm(ev) {
     ev.preventDefault();
