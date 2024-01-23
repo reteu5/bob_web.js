@@ -14,6 +14,8 @@ app.use(session({
 app.get('/', (req, res) => {
     req.session.username = 'ret';
     req.session.cart = ['사과우유', '딸기우유', '초코우유', '고수우유', '오이우유'];
+
+    console.log('Every session:', req.sessionStore.sessions)
     res.send('Arrived at root page');
 });
 
