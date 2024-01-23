@@ -19,22 +19,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// JWT 토큰 생성
+
 app.get('/', (req, res) => {
-    // const token = jwt.sign(
-    //     {
-    //         id: 'ret',
-    //         isAdmin: true
-    //     },
-    //     'my-secret-key',
-    //     {
-    //         expiresIn: '1m',
-    //         issuer: 'ret'
-    //     }
-    // );
-
-    // console.log('token: ', token);
-
     res.send('Landed at root page');
 });
 
@@ -43,8 +29,24 @@ app.get('/user', (req, res) => {
     const token = req.cookies.jwt;
     console.log('token: ', token);
 
-    // const decoded = jwt.verify(token, secretKey);
-    const decoded = jwt.decode(token);
+    // const decoded = jwt.decode(token); // Base64 디코딩만 수행
+    const decoded = jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) {
+            // if JWT in invaild..
+            return res.status(401).json({message: 'Unathorized'});
+        }
+
+        const clientId = decoded.clientId;
+        if (clientId === 'ret') {
+            console.log('myPage');
+            // next();
+        } else if (clientId === 'admin') {
+            console.log('adminPage');
+            // next();
+        } else {
+            res.status(403).json({message: 'Forbidden'});
+        }
+    }); // 키를 사용하여 위변조 검증
     console.log('decoded: ', decoded);
 
     res.send(`msg in JWT: ${JSON.stringify(decoded)}`);
