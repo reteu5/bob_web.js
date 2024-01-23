@@ -17,6 +17,14 @@ app.get('/', (req, res) => {
     res.send('Arrived at root page');
 });
 
+app.get('/user', (req, res) => {
+    // 하나씩 들고올 때에는 JSON.stringify() 써야한다는듯?
+    const {username, cart} = req.session;
+    console.log('req.session: ', req.session);
+
+    res.send(`Hello, ${username}! You have brought: ${cart}`);
+});
+
 app.listen(port, () => {
     console.log(`Express Listening on port ${port}`);
 });
